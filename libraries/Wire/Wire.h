@@ -34,16 +34,17 @@
 class TwoWire : public Stream
 {
   public:
-#if defined(NRF52_SERIES)
+#ifdef NRF52
     TwoWire(NRF_TWIM_Type * p_twim, NRF_TWIS_Type * p_twis, IRQn_Type IRQn, uint8_t pinSDA, uint8_t pinSCL);
-#else
-    TwoWire(NRF_TWI_Type * p_twi, uint8_t pinSDA, uint8_t pinSCL);
-#endif
 #ifdef ARDUINO_GENERIC
     void setPins(uint8_t pinSDA, uint8_t pinSCL);
 #endif // ARDUINO_GENERIC
+
+#else
+    TwoWire(NRF_TWI_Type * p_twi, uint8_t pinSDA, uint8_t pinSCL);
+#endif
     void begin();
-#if defined(NRF52_SERIES)
+#ifdef NRF52
     void begin(uint8_t);
 #endif
     void end();
@@ -63,7 +64,7 @@ class TwoWire : public Stream
     virtual int read(void);
     virtual int peek(void);
     virtual void flush(void);
-#if defined(NRF52_SERIES)
+#ifdef NRF52
     void onReceive(void(*)(int));
     void onRequest(void(*)(void));
     void onService(void);
@@ -72,7 +73,7 @@ class TwoWire : public Stream
     using Print::write;
 
   private:
-#if defined(NRF52_SERIES)
+#ifdef NRF52
     NRF_TWIM_Type * _p_twim;
     NRF_TWIS_Type * _p_twis;
 #else
@@ -106,10 +107,6 @@ class TwoWire : public Stream
 
 #if WIRE_INTERFACES_COUNT > 0
 extern TwoWire Wire;
-#endif
-
-#if WIRE_INTERFACES_COUNT > 1
-extern TwoWire Wire1;
 #endif
 
 #endif

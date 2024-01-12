@@ -7,9 +7,6 @@
 #include <string.h>
 #include <math.h>
 
-#include "nrf.h"
-#include "nrf_peripherals.h"
-
 typedef bool boolean;
 typedef uint8_t byte;
 typedef uint16_t word;
@@ -20,11 +17,28 @@ typedef uint16_t word;
 #include "avr/pgmspace.h"
 #include "avr/interrupt.h"
 
+
 #include "itoa.h"
+
+#ifdef __cplusplus
+#include "lp_timer.h"
+#endif // __cplusplus
 
 #ifdef __cplusplus
 extern "C"{
 #endif // __cplusplus
+
+// put loop() to sleep waiting for trigger and then process trigger when it wakes up 
+void sleep();
+
+// put loop() to sleep 
+void waitForTrigger();
+
+// process any queued triggers 
+void processTrigger();
+
+float getChipTemperature(); // the not very accurate nRF52 on chip temp in 0.25C increments
+int32_t getRawChipTemperature(); // == getChipTemperature * 4
 
 #include "wiring_constants.h"
 
@@ -95,23 +109,12 @@ void loop( void ) ;
 
 #define bit(b) (1UL << (b))
 
-#if (GPIO_COUNT == 1)
-#define gpioBaseForPin(P)          ( NRF_GPIO )
-#define digitalPinToPort(P)        ( (NRF_GPIO_Type *) gpioBaseForPin(P) )
-#define digitalPinToPin(P)         ( g_ADigitalPinMap[P] )
-#define digitalPinToBitMask(P)     ( 1 << digitalPinToPin(P) )
-#elif (GPIO_COUNT == 2)
-#define gpioBaseForPin(P)          ( (g_ADigitalPinMap[P] & 0x20) ? NRF_P1 : NRF_P0 )
-#define digitalPinToPort(P)        ( (NRF_GPIO_Type *) gpioBaseForPin(P) )
-#define digitalPinToPin(P)         ( g_ADigitalPinMap[P] & 0x1f )
-#define digitalPinToBitMask(P)     ( 1 << digitalPinToPin(P) )
-#else
-#error "Unsupported GPIO_COUNT"
-#endif
-
-#define portOutputRegister(port)   ( &(port->OUT) )
+#define digitalPinToPort(P)        ( &(NRF_GPIO[P]) )
+#define digitalPinToBitMask(P)     ( 1 << g_ADigitalPinMap[P] )
+//#define analogInPinToBit(P)        ( )
+#define portOutputRegister(port)   ( &(port->OUTSET) )
 #define portInputRegister(port)    ( &(port->IN) )
-#define portModeRegister(port)     ( &(port->DIR) )
+#define portModeRegister(port)     ( &(port->DIRSET) )
 #define digitalPinHasPWM(P)        ( true )
 
 /*

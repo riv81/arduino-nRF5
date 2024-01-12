@@ -31,6 +31,27 @@ extern "C"{
 #define INPUT_PULLUP    (0x2)
 #define INPUT_PULLDOWN  (0x3)
 
+/*** from nrf52_bitfields.h
+#define GPIO_PIN_CNF_DRIVE_S0S1 (0UL) //!< Standard '0', standard '1' 
+#define GPIO_PIN_CNF_DRIVE_H0S1 (1UL) //!< High drive '0', standard '1' 
+#define GPIO_PIN_CNF_DRIVE_S0H1 (2UL) //!< Standard '0', high drive '1' 
+#define GPIO_PIN_CNF_DRIVE_H0H1 (3UL) //!< High drive '0', high 'drive '1'' 
+#define GPIO_PIN_CNF_DRIVE_D0S1 (4UL) //!< Disconnect '0' standard '1' (normally used for wired-or connections) 
+#define GPIO_PIN_CNF_DRIVE_D0H1 (5UL) //!< Disconnect '0', high drive '1' (normally used for wired-or connections) 
+#define GPIO_PIN_CNF_DRIVE_S0D1 (6UL) //!< Standard '0'. disconnect '1' (normally used for wired-and connections) 
+#define GPIO_PIN_CNF_DRIVE_H0D1 (7UL) //!< High drive '0', disconnect '1' (normally used for wired-and connections) 
+*********************/
+
+// The default OUTPUT is SOS1
+#define OUTPUT_S0S1     (0x10+0x0)
+#define OUTPUT_H0S1     (0x10+0x1)
+#define OUTPUT_S0H1     (0x10+0x2)
+#define OUTPUT_H0H1     (0x10+0x3)
+#define OUTPUT_D0S1     (0x10+0x4)
+#define OUTPUT_D0H1     (0x10+0x5)
+#define OUTPUT_S0D1     (0x10+0x6)
+#define OUTPUT_H0D1     (0x10+0x7)
+
 #define PI 3.1415926535897932384626433832795
 #define HALF_PI 1.5707963267948966192313216916398
 #define TWO_PI 6.283185307179586476925286766559

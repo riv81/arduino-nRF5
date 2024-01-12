@@ -25,12 +25,14 @@
 extern "C" {
 #endif
 
-void init( void )
-{
-  NVIC_SetPriority(RTC1_IRQn, 15);
-  NVIC_ClearPendingIRQ(RTC1_IRQn);
-  NVIC_EnableIRQ(RTC1_IRQn);
-
+void init( void ) {
+/**   Rev 3 moved millis() to RTC1 with lp_timer
+  NVIC_SetPriority(RTC2_IRQn, 15);
+  NVIC_ClearPendingIRQ(RTC2_IRQn);
+  NVIC_EnableIRQ(RTC2_IRQn);
+**/
+/**
+  Rev 8 start clock when starting softdevice
   #if defined(USE_LFXO)
     NRF_CLOCK->LFCLKSRC = (uint32_t)((CLOCK_LFCLKSRC_SRC_Xtal << CLOCK_LFCLKSRC_SRC_Pos) & CLOCK_LFCLKSRC_SRC_Msk);
   #elif defined(USE_LFSYNT)
@@ -38,27 +40,20 @@ void init( void )
   #else //USE_LFRC
     NRF_CLOCK->LFCLKSRC = (uint32_t)((CLOCK_LFCLKSRC_SRC_RC << CLOCK_LFCLKSRC_SRC_Pos) & CLOCK_LFCLKSRC_SRC_Msk);
   #endif
+
   NRF_CLOCK->TASKS_LFCLKSTART = 1UL;
-
-  NRF_RTC1->PRESCALER = 0;
-  NRF_RTC1->INTENSET = RTC_INTENSET_OVRFLW_Msk;
-  NRF_RTC1->EVTENSET = RTC_EVTEN_OVRFLW_Msk;
-  NRF_RTC1->TASKS_START = 1;
-
-  #if defined(RESET_PIN)
-  if (((NRF_UICR->PSELRESET[0] & UICR_PSELRESET_CONNECT_Msk) != (UICR_PSELRESET_CONNECT_Connected << UICR_PSELRESET_CONNECT_Pos)) ||
-      ((NRF_UICR->PSELRESET[1] & UICR_PSELRESET_CONNECT_Msk) != (UICR_PSELRESET_CONNECT_Connected << UICR_PSELRESET_CONNECT_Pos))){
-      NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen << NVMC_CONFIG_WEN_Pos;
-      while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
-      NRF_UICR->PSELRESET[0] = RESET_PIN;
-      while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
-      NRF_UICR->PSELRESET[1] = RESET_PIN;
-      while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
-      NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren << NVMC_CONFIG_WEN_Pos;
-      while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
-      NVIC_SystemReset();
-  }
-  #endif
+**/
+/**   Rev 3 moved millis() to RTC1 with lp_timer
+  NRF_RTC2->PRESCALER = 0;
+  NRF_RTC2->INTENSET = RTC_INTENSET_OVRFLW_Msk;
+  NRF_RTC2->EVTENSET = RTC_EVTEN_OVRFLW_Msk;
+  NRF_RTC2->TASKS_START = 1;
+ **/
+ 
+ /**  No Reset Pin.  This define did not work for me. Needs extra linker script like NFC-GPIO pins?
+  Reset pin code is in system_nrf52.c and needs the define -DCONFIG_GPIO_AS_PINRESET added to the 
+   xxx.menu.softdevice.s132.build.extra_flags  in boards.txt for the particular board
+  **/
 }
 
 #ifdef __cplusplus
