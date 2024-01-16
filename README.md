@@ -1,17 +1,4 @@
-# Modified Arduino Core for Nordic Semiconductor nRF52832 bare modules  
-
-This modified version, pfod_lp_nrf52_2023 V11, only supports nRF52832 boards.  
-The code and libraries from https://github.com/sandeepmistry/arduino-nRF5 and https://github.com/sandeepmistry/arduino-BLEPeripheral have been modified to allow for very low power BLE on nRF52832 bare modules  
-  
-See <a href="https://www.forward.com.au/pfod/BLE/LowPower_2022/index.html" target="_blank">Easy Very Low Power BLE in Arduino -- 2022</a>
-  
-Modifications  by Matthew Ford  
-  (c)2022 Forward Computing and Control Pty. Ltd.  
-  This code is not warranted to be fit for any purpose. You may only use it at your own risk.  
-  This code may be freely used for both private and commercial use, subject to the <a href="https://github.com/sandeepmistry/arduino-nRF5/blob/master/LICENSE" target="_blank">LGPL License</a>  
-  Provide this copyright is maintained.  
-
-# Arduino Core for Nordic Semiconductor nRF5 based boards   
+# Arduino Core for Nordic Semiconductor nRF5 based boards
 
 [![Build Status](https://travis-ci.org/sandeepmistry/arduino-nRF5.svg?branch=master)](https://travis-ci.org/sandeepmistry/arduino-nRF5) [![OpenCollective](https://opencollective.com/arduino-nRF5/backers/badge.svg)](#backers)
 [![OpenCollective](https://opencollective.com/arduino-nRF5/sponsors/badge.svg)](#sponsors)
@@ -93,6 +80,9 @@ Become a sponsor and get your logo on our README on Github with a link to your s
 
 ## Supported boards
 
+### nRF52833
+ * [BBC micro:bit v2](https://microbit.org/new-microbit/)
+
 ### nRF52
  * [Plain nRF52 MCU](https://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF52832)
  * [Nordic Semiconductor nRF52 DK](https://www.nordicsemi.com/eng/Products/Bluetooth-Smart-Bluetooth-low-energy/nRF52-DK)
@@ -103,6 +93,7 @@ Become a sponsor and get your logo on our README on Github with a link to your s
  * [RedBear Nano 2](https://github.com/redbear/nRF5x#ble-nano-2)
  * [Bluey](https://github.com/electronut/ElectronutLabs-bluey)
  * [hackaBLE](https://github.com/electronut/ElectronutLabs-hackaBLE)
+ * [hackaBLE_v2](https://github.com/electronut/ElectronutLabs-hackaBLE)
  * [DWM1001-DEV](https://www.decawave.com/product/dwm1001-development-board/)
 
 ### nRF51
@@ -121,6 +112,7 @@ Become a sponsor and get your logo on our README on Github with a link to your s
  * [ng-beacon](https://github.com/urish/ng-beacon)
  * [TinyBLE](https://www.seeedstudio.com/Seeed-Tiny-BLE-BLE-%2B-6DOF-Mbed-Platform-p-2268.html)
  * [Sino:bit](http://sinobit.org)
+ * [SeeedArchLink](http://wiki.seeedstudio.com/Arch_Link/)
 
 ## Installing
 
@@ -203,7 +195,7 @@ The SD consumes ~5k of Ram + some extra based on actual BLE configuration.
   * Linux: ```~/Arduino```
   * Windows: ```~/Documents/Arduino```
  3. Create a folder named ```hardware```, if it does not exist, and change directories to it
- 4. Clone this repo: ```git clone https://github.com/sandeepmistry/arduino-nRF5.git sandeepmistry/nRF5```
+ 4. Clone this repo: ```git clone https://github.com/sandeepmistry/arduino-nRF5.git sandeepmistry-github/nRF5```
  5. Restart the Arduino IDE
 
 ## BLE

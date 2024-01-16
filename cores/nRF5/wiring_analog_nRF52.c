@@ -1,7 +1,3 @@
-// modified by Matthew Ford
-// (c)2022 Forward Computing and Control Pty. Ltd, NSW, Australia
-// changed SAADC_CH_CONFIG_TACQ_3us to SAADC_CH_CONFIG_TACQ_10us to match lp_ADC settings
-
 /*
   Copyright (c) 2014 Arduino LLC.  All right reserved.
   Copyright (c) 2016 Sandeep Mistry All right reserved.
@@ -21,55 +17,43 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifdef NRF52
-
-#include "nrf.h"
-
 #include "Arduino.h"
 #include "wiring_private.h"
+
+#if defined(NRF52_SERIES)
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-uint32_t saadcReference = SAADC_CH_CONFIG_REFSEL_Internal;
-uint32_t saadcGain      = SAADC_CH_CONFIG_GAIN_Gain1_5;
-
-unsigned long adc_settling_time = SAADC_CH_CONFIG_TACQ_10us; // < 10 us good for <100K source resisance.
-// i.e. a  less than 200K + less than 200K  voltage divider connected to the ADC pin
-// The calculated source resistance == the value of two resistors if they were connected in parallel.
-
-/** choice depends on the source resistance and are
-SAADC_CH_CONFIG_TACQ_3us (0UL) < 3 us   for < 10K
-SAADC_CH_CONFIG_TACQ_5us (1UL) < 5 us   for < 40K
-SAADC_CH_CONFIG_TACQ_10us (2UL) < 10 us  for <100K
-SAADC_CH_CONFIG_TACQ_15us (3UL) < 15 us  for <200K
-SAADC_CH_CONFIG_TACQ_20us (4UL) < 20 us  for <400K
-SAADC_CH_CONFIG_TACQ_40us (5UL) < 40 us  for <800K
-*/
-
-
-#define PWM_COUNT 3
+static uint32_t saadcReference = SAADC_CH_CONFIG_REFSEL_Internal;
+static uint32_t saadcGain      = SAADC_CH_CONFIG_GAIN_Gain1_5;
 
 static NRF_PWM_Type* pwms[PWM_COUNT] = {
   NRF_PWM0,
   NRF_PWM1,
-  NRF_PWM2
+  NRF_PWM2,
+#if PWM_COUNT > 3
+  NRF_PWM3
+#endif
 };
 
 static uint32_t pwmChannelPins[PWM_COUNT] = {
   0xFFFFFFFF,
   0xFFFFFFFF,
-  0xFFFFFFFF
+  0xFFFFFFFF,
+#if PWM_COUNT > 3
+  0xFFFFFFFF,
+#endif
 };
 static uint16_t pwmChannelSequence[PWM_COUNT];
 
-int ADC_readResolution = 10;
+static int readResolution = 10;
 static int writeResolution = 8;
 
 void analogReadResolution( int res )
 {
-  ADC_readResolution = res;
+  readResolution = res;
 }
 
 void analogWriteResolution( int res )
@@ -167,13 +151,13 @@ uint32_t analogRead( uint32_t ulPin )
       return 0;
   }
 
-  if (ADC_readResolution <= 8) {
+  if (readResolution <= 8) {
     resolution = 8;
     saadcResolution = SAADC_RESOLUTION_VAL_8bit;
-  } else if (ADC_readResolution <= 10) {
+  } else if (readResolution <= 10) {
     resolution = 10;
     saadcResolution = SAADC_RESOLUTION_VAL_10bit;
-  } else if (ADC_readResolution <= 12) {
+  } else if (readResolution <= 12) {
     resolution = 12;
     saadcResolution = SAADC_RESOLUTION_VAL_12bit;
   } else {
@@ -192,7 +176,7 @@ uint32_t analogRead( uint32_t ulPin )
                             | ((SAADC_CH_CONFIG_RESP_Bypass   << SAADC_CH_CONFIG_RESN_Pos)   & SAADC_CH_CONFIG_RESN_Msk)
                             | ((saadcGain                     << SAADC_CH_CONFIG_GAIN_Pos)   & SAADC_CH_CONFIG_GAIN_Msk)
                             | ((saadcReference                << SAADC_CH_CONFIG_REFSEL_Pos) & SAADC_CH_CONFIG_REFSEL_Msk)
-                            | ((adc_settling_time      << SAADC_CH_CONFIG_TACQ_Pos)   & SAADC_CH_CONFIG_TACQ_Msk)
+                            | ((SAADC_CH_CONFIG_TACQ_3us      << SAADC_CH_CONFIG_TACQ_Pos)   & SAADC_CH_CONFIG_TACQ_Msk)
                             | ((SAADC_CH_CONFIG_MODE_SE       << SAADC_CH_CONFIG_MODE_Pos)   & SAADC_CH_CONFIG_MODE_Msk);
   NRF_SAADC->CH[0].PSELN = pin;
   NRF_SAADC->CH[0].PSELP = pin;
@@ -222,7 +206,7 @@ uint32_t analogRead( uint32_t ulPin )
 
   NRF_SAADC->ENABLE = (SAADC_ENABLE_ENABLE_Disabled << SAADC_ENABLE_ENABLE_Pos);
 
-  return mapResolution(value, resolution, ADC_readResolution);
+  return mapResolution(value, resolution, readResolution);
 }
 
 // Right now, PWM output only works on the pins with

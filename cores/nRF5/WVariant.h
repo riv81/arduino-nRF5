@@ -19,7 +19,6 @@
 #pragma once
 
 #include <stdint.h>
-#include <variant.h>
 
 #ifdef __cplusplus
 extern "C" {

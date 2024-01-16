@@ -32,7 +32,6 @@ extern "C"
 #endif // __cplusplus
 
 // Number of pins defined in PinDescription array
-// note pins 11,12 not defined
 #define PINS_COUNT           (14u)
 #define NUM_DIGITAL_PINS     (14u)
 #define NUM_ANALOG_INPUTS    (6u)
@@ -93,11 +92,8 @@ static const uint8_t SCL = PIN_WIRE_SCL;
 
 /*
  * Reset Button at P0.21
- * This reset button is NOT enabled.
-  Reset pin code is in system_nrf52.c and needs the define -DCONFIG_GPIO_AS_PINRESET added to the 
-   xxx.menu.softdevice.s132.build.extra_flags  in boards.txt for the particular board
-   No Reset Pin.  This define did not work for me. Needs extra linker script like NFC-GPIO pins?
-  **/
+ */
+#define RESET_PIN            21
 
 #ifdef __cplusplus
 }
