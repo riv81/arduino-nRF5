@@ -16,21 +16,30 @@
 #define ARDUINO_MAIN
 #include "Arduino.h"
 
+#include "lp_timer_init.h"
+
 // Weak empty variant initialization function.
 // May be redefined by variant files.
 void initVariant() __attribute__((weak));
 void initVariant() { }
+
 
 /*
  * \brief Main entry point of Arduino application
  */
 int main( void )
 {
-  init();
+  init(); // in wiring.c
+  delayMicroseconds(100);
 
   initVariant();
+  delayMicroseconds(100);
 
-  delay(1);
+  BLEPeripheralStartSoftDevice();
+  delayMicroseconds(100);
+
+  lp_timer_init();
+  delayMicroseconds(100);
 
   setup();
 

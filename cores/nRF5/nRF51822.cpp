@@ -221,12 +221,12 @@ uint32_t app_ram_base_required = 0;
 
 #if defined(NRF5) && !defined(S110)
   extern uint32_t __data_start__;
-  uint32_t app_ram_base = 0x20002780;
+  uint32_t app_ram_base = (uint32_t) &__data_start__;
   
   ble_enable_params_t enableParams;
 
   memset(&enableParams, 0, sizeof(ble_enable_params_t));
-  enableParams.common_enable_params.vs_uuid_count   = 30;
+  enableParams.common_enable_params.vs_uuid_count   = 10;
   enableParams.gatts_enable_params.attr_tab_size    = BLE_GATTS_ATTR_TAB_SIZE;
   enableParams.gatts_enable_params.service_changed  = 1;
   enableParams.gap_enable_params.periph_conn_count  = 1;

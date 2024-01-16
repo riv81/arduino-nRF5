@@ -17,6 +17,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#ifdef _REMOVED_CODE_
+
 #include <nrf.h>
 
 #include "Arduino.h"
@@ -24,7 +26,7 @@
 
 #include <string.h>
 
-#if defined(NRF52_SERIES)
+#ifdef NRF52
 #define NUMBER_OF_GPIO_TE 8
 #else
 #define NUMBER_OF_GPIO_TE 4
@@ -42,7 +44,7 @@ static void __initialize()
 
   NVIC_DisableIRQ(GPIOTE_IRQn);
   NVIC_ClearPendingIRQ(GPIOTE_IRQn);
-  NVIC_SetPriority(GPIOTE_IRQn, 2);
+  NVIC_SetPriority(GPIOTE_IRQn, 1);
   NVIC_EnableIRQ(GPIOTE_IRQn);
 }
 
@@ -136,12 +138,14 @@ void GPIOTE_IRQHandler()
       }
 
     *(uint32_t *)((uint32_t)NRF_GPIOTE + event) = 0;
-#if __CORTEX_M == 0x04
+//#if __CORTEX_M == 0x04
     volatile uint32_t dummy = *((volatile uint32_t *)((uint32_t)NRF_GPIOTE + event));
     (void)dummy;
-#endif
+//#endif
     }
 
     event = (uint32_t)((uint32_t)event + 4);
   }
 }
+
+#endif // #ifdef _REMVOED_CODE_

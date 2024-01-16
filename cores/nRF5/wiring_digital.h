@@ -27,9 +27,22 @@
 
 /**
  * \brief Configures the specified pin to behave either as an input or an output. See the description of digital pins for details.
+ * For nRF52 extra modes are available.  
+ * Standard drive is typically 2mA (min 1mA) '0' sink (low) or '1' source (high). High drive (VDD > 2.7V) is typically 10mA low, 9mA high (min 6mA)
+ *
+ * OUTPUT_S0S1  Standard '0', standard '1'  same as OUTPUT
+ * OUTPUT_H0S1  High drive '0', standard '1'
+ * OUTPUT_S0H1  Standard '0', high drive '1'
+ * OUTPUT_H0H1  High drive '0', high 'drive '1''
+ * OUTPUT_D0S1  Disconnect '0' standard '1' (normally used for wired-or connections) 
+ * OUTPUT_D0H1  Disconnect '0', high drive '1' (normally used for wired-or connections) 
+ * OUTPUT_S0D1  Standard '0'. disconnect '1' (normally used for wired-and connections) 
+ * OUTPUT_H0D1  High drive '0', disconnect '1' (normally used for wired-and connections) 
+ * NOTE P0.27 should be only low (standard) drive, low frequency
  *
  * \param ulPin The number of the pin whose mode you wish to set
  * \param ulMode Can be INPUT, OUTPUT, INPUT_PULLUP or INPUT_PULLDOWN
+ * or OUTPUT_S0S1, OUTPUT_H0S1, OUTPUT_S0H1, OUTPUT_H1H1, OUTPUT_D0S1, OUTPUT_D0H1, OUTPUT_S0D1, OUTPUT_H0D1
  */
 extern void pinMode( uint32_t dwPin, uint32_t dwMode ) ;
 

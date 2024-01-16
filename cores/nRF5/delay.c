@@ -27,7 +27,7 @@ extern "C" {
 
 static volatile uint32_t overflows = 0;
 
-uint32_t millis( void )
+/*uint32_t millis( void )
 {
   uint64_t ticks = (uint64_t)((uint64_t)overflows << (uint64_t)24) | (uint64_t)(NRF_RTC1->COUNTER);
 
@@ -66,7 +66,7 @@ void RTC1_IRQHandler(void)
 #endif
 
   overflows = (overflows + 1) & 0xff;
-}
+}*/
 
 #ifdef __cplusplus
 }
