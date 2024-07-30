@@ -15,7 +15,8 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-#ifdef _REMVOED_CODE_
+#define _REMOVED_CODE_
+#ifdef _REMOVED_CODE_
 
 #ifndef _WIRING_INTERRUPTS_
 #define _WIRING_INTERRUPTS_

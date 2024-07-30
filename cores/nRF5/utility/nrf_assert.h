@@ -52,6 +52,7 @@
 #define ASSERT(expr) 
 
 // comment out all the code below
+#define _REMOVED_CODE_
 #ifdef _REMOVED_CODE_ 
 
 #ifdef __cplusplus
