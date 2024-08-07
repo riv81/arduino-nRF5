@@ -24,11 +24,12 @@ class BLEAttribute
   public:
     BLEAttribute(const char* uuid, enum BLEAttributeType type);
     const char* uuid() const;
+    // void setuuid(const char* uuid); 
 
     enum BLEAttributeType type() const;
+    const char*                 _uuid;
 
   private:
-    const char*                 _uuid;
     enum BLEAttributeType       _type;
 };
 

@@ -9,6 +9,7 @@ BLEAttribute::BLEAttribute(const char* uuid, enum BLEAttributeType type) :
 {
 }
 
+
 const char* BLEAttribute::uuid() const {
   return this->_uuid;
 }
