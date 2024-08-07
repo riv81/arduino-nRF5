@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "bleConstants.h"
+#define NRF5
+#define NRF52
 #if defined(NRF51) || defined(NRF52) || defined(__RFduino__)
 
 #ifdef __RFduino__
@@ -226,8 +228,8 @@ uint32_t app_ram_base_required = 0;
   ble_enable_params_t enableParams;
 
   memset(&enableParams, 0, sizeof(ble_enable_params_t));
-  enableParams.common_enable_params.vs_uuid_count   = 30;
-  enableParams.gatts_enable_params.attr_tab_size    = BLE_GATTS_ATTR_TAB_SIZE;
+  enableParams.common_enable_params.vs_uuid_count   = 50;
+  enableParams.gatts_enable_params.attr_tab_size    = 0x800;//BLE_GATTS_ATTR_TAB_SIZE;
   enableParams.gatts_enable_params.service_changed  = 1;
   enableParams.gap_enable_params.periph_conn_count  = 1;
   enableParams.gap_enable_params.central_conn_count = 0;
